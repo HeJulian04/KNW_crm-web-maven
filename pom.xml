@@ -12,7 +12,7 @@
 		<maven.compiler.target>13</maven.compiler.target>
 	</properties>
 
-	<name>m154-crm-web-mvn</name>
+	<name>m154-crm-web-maven</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -71,6 +71,67 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.27.2</version>
+
+				<configuration>
+					<verbose>true</verbose>
+					<authConfig> <username>jhenz04</username> <password>973e40ba-5679-41dd-8974-8f499878e464</password> </authConfig>
+					<images>
+						<image>
+							<name>jhenz04/modul154_docker_knw</name>
+							<build>
+								<dockerFileDir>${project.basedir}</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>mydeploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+			
+			<plugin>
+				<version>2.7</version>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>13</source>
+					<target>13</target>
+					<compilerVersion>13</compilerVersion>
+				</configuration>
 			</plugin>
 
 		</plugins>
